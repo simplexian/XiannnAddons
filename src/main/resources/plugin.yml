@@ -1,0 +1,52 @@
+name: XiannnAddons
+version: '${project.version}'
+main: me.xiannn.addons.XiannnAddons
+api-version: '1.21'
+description: A modular addon plugin for Paper 1.21.8
+author: Xiannn
+
+commands:
+  xiannnaddons:
+    description: Main command for XiannnAddons
+    usage: /xiannnaddons <help|reload|modules|version|log>
+    aliases: [xa]
+
+permissions:
+  xiannnaddons.admin:
+    description: Full admin access to XiannnAddons
+    default: op
+    children:
+      xiannnaddons.reload: true
+      xiannnaddons.modules: true
+      xiannnaddons.tips.reload: true
+      xiannnaddons.cleanup.now: true
+      xiannnaddons.cleanup.status: true
+      xiannnaddons.cleanup.whitelist: true
+      xiannnaddons.cleanup.reload: true
+  xiannnaddons.reload:
+    description: Reload all XiannnAddons configurations
+    default: op
+  xiannnaddons.modules:
+    description: View and toggle modules on/off
+    default: op
+  xiannnaddons.tips.toggle:
+    description: Allow a player to toggle tips on/off
+    default: true
+  xiannnaddons.tips.reload:
+    description: Reload the ChatReminder configuration
+    default: op
+  xiannnaddons.cleanup.now:
+    description: Force an immediate item cleanup
+    default: op
+  xiannnaddons.cleanup.status:
+    description: View cleanup statistics
+    default: op
+  xiannnaddons.cleanup.whitelist:
+    description: Manage the cleanup whitelist
+    default: op
+  xiannnaddons.cleanup.reload:
+    description: Reload the ItemCleanup configuration
+    default: op
+  xiannnaddons.cleanup.toggle:
+    description: Toggle cleanup bossbar/actionbar display
+    default: true
