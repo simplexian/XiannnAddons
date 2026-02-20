@@ -1,0 +1,238 @@
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║           XiannnAddons — Discord Integration Config              ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+# ── Bot Settings ─────────────────────────────────────────────────────
+bot:
+  enabled: false           # Set to true after configuring token
+  token: 'YOUR_BOT_TOKEN_HERE'
+
+  # Bot status message
+  activity:
+    type: WATCHING         # PLAYING, WATCHING, LISTENING, COMPETING
+    text: 'the server'
+
+# ── Channel IDs ──────────────────────────────────────────────────────
+# Each category can be sent to a different Discord channel.
+# Set to '' or 0 to disable a specific category.
+channels:
+  staff-chat: '0'          # Staff chat messages mirrored here
+  punishments: '0'         # Bans, mutes, kicks, warns
+  commands: '0'            # Staff command log (while in staff mode)
+  gamemode: '0'            # Gamemode change log
+  vanish: '0'              # Vanish toggle log
+  reports: '0'             # Player reports
+  staff-activity: '0'      # Staff login/logout
+
+# ── Embed Templates ──────────────────────────────────────────────────
+# Configurable embed format for each event type.
+# Placeholders vary per event — see comments above each template.
+#
+# Common placeholders: {staff}, {player}, {time}, {world}
+# Color: hex string (e.g. "#FF0000")
+# Timestamp: auto-inserted as current time
+
+embeds:
+  # ── Staff Chat ──
+  # Placeholders: {staff}, {rank}, {message}
+  staff-chat:
+    author:
+      name: '💬 Staff Chat'
+    color: '#5865F2'
+    description: '**[{rank}] {staff}:** {message}'
+    footer:
+      text: 'Staff Chat'
+
+  # ── Punishment: Ban ──
+  # Placeholders: {staff}, {player}, {reason}, {type}, {duration}, {expires}, {appeal_id}
+  ban:
+    author:
+      name: '🔨 Player Banned'
+    color: '#FF0000'
+    fields:
+      - name: 'Player'
+        value: '{player}'
+        inline: true
+      - name: 'By'
+        value: '{staff}'
+        inline: true
+      - name: 'Type'
+        value: '{type}'
+        inline: true
+      - name: 'Reason'
+        value: '{reason}'
+        inline: false
+      - name: 'Duration'
+        value: '{duration}'
+        inline: true
+      - name: 'Expires'
+        value: '{expires}'
+        inline: true
+      - name: 'Appeal ID'
+        value: '`{appeal_id}`'
+        inline: false
+    footer:
+      text: 'Punishment System'
+
+  # ── Punishment: Unban ──
+  # Placeholders: {staff}, {player}, {reason}
+  unban:
+    author:
+      name: '✅ Player Unbanned'
+    color: '#2ECC71'
+    fields:
+      - name: 'Player'
+        value: '{player}'
+        inline: true
+      - name: 'By'
+        value: '{staff}'
+        inline: true
+      - name: 'Reason'
+        value: '{reason}'
+        inline: false
+    footer:
+      text: 'Punishment System'
+
+  # ── Punishment: Mute ──
+  # Placeholders: {staff}, {player}, {reason}, {type}, {duration}, {expires}
+  mute:
+    author:
+      name: '🔇 Player Muted'
+    color: '#FFA500'
+    fields:
+      - name: 'Player'
+        value: '{player}'
+        inline: true
+      - name: 'By'
+        value: '{staff}'
+        inline: true
+      - name: 'Type'
+        value: '{type}'
+        inline: true
+      - name: 'Reason'
+        value: '{reason}'
+        inline: false
+      - name: 'Duration'
+        value: '{duration}'
+        inline: true
+    footer:
+      text: 'Punishment System'
+
+  # ── Punishment: Kick ──
+  # Placeholders: {staff}, {player}, {reason}
+  kick:
+    author:
+      name: '👢 Player Kicked'
+    color: '#FF6347'
+    fields:
+      - name: 'Player'
+        value: '{player}'
+        inline: true
+      - name: 'By'
+        value: '{staff}'
+        inline: true
+      - name: 'Reason'
+        value: '{reason}'
+        inline: false
+    footer:
+      text: 'Punishment System'
+
+  # ── Punishment: Warn ──
+  # Placeholders: {staff}, {player}, {reason}, {active_warnings}
+  warn:
+    author:
+      name: '⚠️ Player Warned'
+    color: '#FFD700'
+    fields:
+      - name: 'Player'
+        value: '{player}'
+        inline: true
+      - name: 'By'
+        value: '{staff}'
+        inline: true
+      - name: 'Reason'
+        value: '{reason}'
+        inline: false
+      - name: 'Active Warnings'
+        value: '{active_warnings}'
+        inline: true
+    footer:
+      text: 'Punishment System'
+
+  # ── GameMode Change ──
+  # Placeholders: {staff}, {from}, {to}, {world}
+  gamemode:
+    author:
+      name: '🎮 GameMode Change'
+    color: '#9B59B6'
+    fields:
+      - name: 'Player'
+        value: '{staff}'
+        inline: true
+      - name: 'Change'
+        value: '{from} → {to}'
+        inline: true
+      - name: 'World'
+        value: '{world}'
+        inline: true
+    footer:
+      text: 'GameMode Logger'
+
+  # ── Command Log ──
+  # Placeholders: {staff}, {command}, {world}
+  command-log:
+    author:
+      name: '📝 Staff Command'
+    color: '#3498DB'
+    description: '`{command}`'
+    fields:
+      - name: 'Staff'
+        value: '{staff}'
+        inline: true
+      - name: 'World'
+        value: '{world}'
+        inline: true
+    footer:
+      text: 'Command Logger'
+
+  # ── Vanish Toggle ──
+  # Placeholders: {staff}, {state}
+  vanish:
+    author:
+      name: '👻 Vanish Toggle'
+    color: '#95A5A6'
+    description: '**{staff}** is now **{state}**'
+    footer:
+      text: 'Vanish System'
+
+  # ── Report ──
+  # Placeholders: {reporter}, {reported}, {reason}, {report_id}
+  report:
+    author:
+      name: '🚨 New Report'
+    color: '#E74C3C'
+    fields:
+      - name: 'Reporter'
+        value: '{reporter}'
+        inline: true
+      - name: 'Reported'
+        value: '{reported}'
+        inline: true
+      - name: 'Report ID'
+        value: '#{report_id}'
+        inline: true
+      - name: 'Reason'
+        value: '{reason}'
+        inline: false
+    footer:
+      text: 'Report System'
+
+  # ── Staff Activity ──
+  # Placeholders: {staff}, {action}
+  staff-activity:
+    author:
+      name: '📋 Staff Activity'
+    color: '#1ABC9C'
+    description: '**{staff}** {action}'
+    footer:
+      text: 'Staff Tracker'

@@ -1,0 +1,210 @@
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║           XiannnAddons — Staff GUI Layouts                        ║
+# ╚══════════════════════════════════════════════════════════════════╝
+# Slot numbers: 0-53 for double chest (54 slots).
+# Materials: Minecraft material names.
+# Supports color codes in names/lore.
+
+# ── Main Staff Menu (/staff) — 54 slots ─────────────────────────────
+main-menu:
+  title: '&8&l✦ Staff Panel'
+  size: 54
+
+  items:
+    # Header decoration
+    filler:
+      slots: [0,1,2,3,4,5,6,7,8,45,46,47,51,52,53]
+      material: BLACK_STAINED_GLASS_PANE
+      name: ' '
+
+    online-players:
+      slot: 20
+      material: PLAYER_HEAD
+      name: '&a&lOnline Players'
+      lore:
+        - '&7Click to browse online players.'
+        - '&7Players: &f{online_count}/{max_players}'
+
+    player-lookup:
+      slot: 22
+      material: COMPASS
+      name: '&e&lPlayer Lookup'
+      lore:
+        - '&7Search for any player by name.'
+        - '&7View history, bans, notes, etc.'
+
+    vanish-toggle:
+      slot: 24
+      material: ENDER_EYE
+      name: '&7&lVanish: {vanish_status}'
+      lore:
+        - '&7Click to toggle vanish mode.'
+        - '&7Current: {vanish_status}'
+
+    reports:
+      slot: 30
+      material: WRITABLE_BOOK
+      name: '&c&lOpen Reports'
+      lore:
+        - '&7View and manage player reports.'
+        - '&7Open reports: &f{open_reports}'
+
+    recent-punishments:
+      slot: 32
+      material: ANVIL
+      name: '&6&lRecent Punishments'
+      lore:
+        - '&7View the latest punishments.'
+
+    server-stats:
+      slot: 40
+      material: REDSTONE_TORCH
+      name: '&b&lServer Stats'
+      lore:
+        - '&7TPS: &f{tps}'
+        - '&7Players: &f{online_count}/{max_players}'
+        - '&7Uptime: &f{uptime}'
+
+    rules:
+      slot: 48
+      material: BOOK
+      name: '&d&lStaff Guidelines'
+      lore:
+        - '&7Click to view staff rules'
+        - '&7and moderation instructions.'
+
+    close:
+      slot: 49
+      material: BARRIER
+      name: '&c&lClose'
+      lore:
+        - '&7Close this menu.'
+
+# ── Player Action Menu — 54 slots ───────────────────────────────────
+player-action:
+  title: '&8&l✦ {player_name}'
+  size: 54
+
+  items:
+    filler:
+      slots: [0,1,2,3,4,5,6,7,8,45,46,47,51,52,53]
+      material: BLACK_STAINED_GLASS_PANE
+      name: ' '
+
+    player-head:
+      slot: 4
+      material: PLAYER_HEAD
+      name: '&f&l{player_name}'
+      lore:
+        - '&7UUID: &f{uuid}'
+        - '&7Rank: {rank}'
+        - '&7First join: &f{first_join}'
+        - '&7Last seen: &f{last_seen}'
+        - '&7IP: &f{ip}'
+
+    ban:
+      slot: 19
+      material: RED_WOOL
+      name: '&c&lBan'
+      lore:
+        - '&7Ban this player.'
+
+    temp-ban:
+      slot: 20
+      material: ORANGE_WOOL
+      name: '&6&lTemp Ban'
+      lore:
+        - '&7Temporarily ban this player.'
+
+    mute:
+      slot: 21
+      material: NOTE_BLOCK
+      name: '&e&lMute'
+      lore:
+        - '&7Mute this player.'
+
+    kick:
+      slot: 22
+      material: LEATHER_BOOTS
+      name: '&a&lKick'
+      lore:
+        - '&7Kick this player.'
+
+    warn:
+      slot: 23
+      material: PAPER
+      name: '&d&lWarn'
+      lore:
+        - '&7Warn this player.'
+
+    freeze:
+      slot: 24
+      material: ICE
+      name: '&b&lFreeze'
+      lore:
+        - '&7Freeze this player in place.'
+
+    quick-punish:
+      slot: 25
+      material: GOLDEN_SWORD
+      name: '&6&lQuick Punish'
+      lore:
+        - '&7Use punishment presets.'
+
+    history:
+      slot: 29
+      material: BOOK
+      name: '&e&lPunishment History'
+      lore:
+        - '&7View all punishments.'
+        - '&7Bans: &f{ban_count}'
+        - '&7Mutes: &f{mute_count}'
+        - '&7Kicks: &f{kick_count}'
+        - '&7Warns: &f{warn_count}'
+
+    notes:
+      slot: 30
+      material: WRITABLE_BOOK
+      name: '&a&lStaff Notes'
+      lore:
+        - '&7View and add notes.'
+        - '&7Notes: &f{note_count}'
+
+    alts:
+      slot: 31
+      material: SKELETON_SKULL
+      name: '&7&lAlt Accounts'
+      lore:
+        - '&7View linked accounts.'
+        - '&7Known alts: &f{alt_count}'
+
+    teleport:
+      slot: 33
+      material: ENDER_PEARL
+      name: '&b&lTeleport'
+      lore:
+        - '&7Teleport to this player.'
+
+    back:
+      slot: 49
+      material: ARROW
+      name: '&7&lBack'
+      lore:
+        - '&7Return to previous menu.'
+
+# ── Staff Guidelines Page — 54 slots ────────────────────────────────
+rules-page:
+  title: '&8&l✦ Staff Guidelines'
+  size: 54
+  # Configurable instruction pages (use navigation arrows)
+  pages:
+    - - '&e&lRule 1: &fRespect all players.'
+      - '&e&lRule 2: &fDo not abuse your powers.'
+      - '&e&lRule 3: &fDocument all punishments.'
+      - '&e&lRule 4: &fUse appropriate punishment levels.'
+      - '&e&lRule 5: &fReport issues to admins.'
+    - - '&e&lPunishment Guide:'
+      - '&7Spam: &fTempmute 10m'
+      - '&7Advertising: &fTempmute 1h + warn'
+      - '&7Hacking: &fTempban 30d'
+      - '&7Grief: &fTempban 7d'

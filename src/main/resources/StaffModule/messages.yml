@@ -1,0 +1,64 @@
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║           XiannnAddons — Staff Module Messages                    ║
+# ╚══════════════════════════════════════════════════════════════════╝
+# All messages support: Legacy (&6), Hex (&#FF5555), MiniMessage.
+# Placeholders vary per message — see comments.
+
+# ── Ban Screen ──
+# Shown to banned players on login attempt.
+# Placeholders: {reason}, {staff}, {expires}, {appeal_id}, {appeal_url}
+ban-screen: |
+  &c&lYou are banned from this server.
+  
+  &7Reason: &f{reason}
+  &7Expires: &f{expires}
+  
+  &7Appeal ID: &e{appeal_id}
+  &7Appeal at: &b{appeal_url}
+
+# ── Kick Screen ──
+# Placeholders: {reason}, {staff}
+kick-screen: |
+  &c&lYou have been kicked.
+  
+  &7Reason: &f{reason}
+
+# ── Mute Notification ──
+# Sent to muted player when they try to chat.
+# Placeholders: {reason}, {expires}
+mute-message: '<color:#FF6347>You are muted.</color> <gray>Reason:</gray> <white>{reason}</white> <gray>Expires:</gray> <white>{expires}</white>'
+
+# ── Warning Notification ──
+# Placeholders: {reason}, {staff}, {active_warnings}
+warn-message: '<color:#FFD700>⚠ You have been warned:</color> <white>{reason}</white> <gray>(Warnings: {active_warnings})</gray>'
+
+# ── Punishment Broadcast ──
+# Sent to all online players when someone is punished.
+# Set to '' to disable broadcast for that type.
+# Placeholders: {player}, {staff}, {reason}, {type}, {duration}
+broadcasts:
+  ban: '<color:#FF0000>✘</color> <white>{player}</white> <gray>has been banned:</gray> <white>{reason}</white>'
+  mute: ''
+  kick: '<color:#FF6347>👢</color> <white>{player}</white> <gray>has been kicked:</gray> <white>{reason}</white>'
+  warn: ''
+
+# ── Vanish Messages ──
+vanish:
+  enabled: '<color:#2ECC71>✔</color> <white>You are now <color:#95A5A6>vanished</color>.</white>'
+  disabled: '<color:#FF6347>✘</color> <white>You are now <color:#2ECC71>visible</color>.</white>'
+
+# ── Staff Mode Messages ──
+staff-mode:
+  enabled: '<color:#FFD700>⚡</color> <white>Staff mode <color:#2ECC71>enabled</color>.</white>'
+  disabled: '<color:#FFD700>⚡</color> <white>Staff mode <color:#FF6347>disabled</color>.</white>'
+
+# ── Staff Chat ──
+staff-chat:
+  toggle-on: '<color:#5865F2>✔</color> <white>Staff chat <color:#2ECC71>enabled</color>. All messages go to staff.</white>'
+  toggle-off: '<color:#5865F2>✘</color> <white>Staff chat <color:#FF6347>disabled</color>. Messages go to public.</white>'
+  mode-set: '<color:#5865F2>ℹ</color> <white>Staff chat mode set to <color:#FFD700>{mode}</color>.</white>'
+
+# ── GameMode ──
+gamemode:
+  changed: '<color:#9B59B6>✔</color> <white>GameMode set to <color:#FFD700>{mode}</color>.</white>'
+  restricted: '<color:#FF0000>✘</color> <white>You cannot do that in creative mode.</white>'

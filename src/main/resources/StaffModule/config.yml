@@ -1,0 +1,177 @@
+# ╔══════════════════════════════════════════════════════════════════╗
+# ║           XiannnAddons — Staff Module Configuration              ║
+# ╚══════════════════════════════════════════════════════════════════╝
+
+# ── Rank System ──────────────────────────────────────────────────────
+# Integrates with LuckPerms or uses a built-in rank system.
+# Tier = priority level (higher number = more power).
+# Staff with lower tier CANNOT punish staff with equal or higher tier.
+ranks:
+  # Use LuckPerms groups as ranks?
+  # If false, the built-in permission-based system below is used.
+  use-luckperms: true
+
+  # Map LuckPerms group names to staff tiers.
+  # Only listed groups are recognized as "staff."
+  # Tier determines hierarchy (higher = more authority).
+  luckperms-groups:
+    helper:
+      tier: 1
+      display-name: '&aHelper'
+      display-color: '#55FF55'
+    moderator:
+      tier: 2
+      display-name: '&bModerator'
+      display-color: '#55FFFF'
+    admin:
+      tier: 3
+      display-name: '&cAdmin'
+      display-color: '#FF5555'
+    owner:
+      tier: 4
+      display-name: '&4Owner'
+      display-color: '#AA0000'
+
+  # Built-in rank system (used when use-luckperms: false).
+  # Assign ranks via permissions: xiannnaddons.staff.rank.<rank-name>
+  builtin-ranks:
+    helper:
+      tier: 1
+      display-name: '&aHelper'
+      display-color: '#55FF55'
+      permission: xiannnaddons.staff.rank.helper
+    moderator:
+      tier: 2
+      display-name: '&bModerator'
+      display-color: '#55FFFF'
+      permission: xiannnaddons.staff.rank.moderator
+    admin:
+      tier: 3
+      display-name: '&cAdmin'
+      display-color: '#FF5555'
+      permission: xiannnaddons.staff.rank.admin
+    owner:
+      tier: 4
+      display-name: '&4Owner'
+      display-color: '#AA0000'
+      permission: xiannnaddons.staff.rank.owner
+
+# ── Staff Chat ───────────────────────────────────────────────────────
+staff-chat:
+  enabled: true
+
+  # Players can choose their preferred mode via /sc mode <toggle|prefix>
+  # Default mode for new staff:
+  default-mode: toggle    # "toggle" or "prefix"
+
+  # Prefix character(s) — messages starting with this go to staff chat
+  prefix-char: '#'
+
+  # Chat format — placeholders: {rank}, {name}, {message}, {rank_color}
+  format: '<color:{rank_color}>[{rank}]</color> <white>{name}</white> <gray>»</gray> <white>{message}</white>'
+
+  # Sound played when a staff chat message is received
+  sound:
+    enabled: true
+    type: entity.experience_orb.pickup
+    volume: 0.3
+    pitch: 1.5
+
+# ── Staff Mode ───────────────────────────────────────────────────────
+staff-mode:
+  enabled: true
+
+  # Log all commands executed while in staff mode to Discord
+  log-commands: true
+
+  # Commands exempt from logging (noisy/irrelevant)
+  command-log-exempt:
+    - /sc
+    - /msg
+    - /r
+    - /tell
+
+# ── Vanish ───────────────────────────────────────────────────────────
+vanish:
+  enabled: true
+  features:
+    hide-from-tab: true
+    invisible: true
+    no-item-pickup: true
+    silent-chest: true
+    no-mob-targeting: true
+    bypass-interaction-sounds: true
+    night-vision: true
+    staff-see-vanished: true
+
+  # Indicator shown next to vanished staff names (visible to other staff)
+  vanish-indicator: '&7[V]'
+
+  # Fake join/leave messages
+  fake-messages:
+    enabled: true
+    join: '<yellow>{name} joined the game</yellow>'
+    leave: '<yellow>{name} left the game</yellow>'
+
+# ── GameMode ─────────────────────────────────────────────────────────
+gamemode:
+  enabled: true
+
+  # Separate inventories per gamemode
+  separate-inventories: true
+
+  # Anti-abuse settings per tier (lower tier = more restrictions)
+  restrictions:
+    # Tier at or below which these restrictions apply.
+    # Staff with tier ABOVE this value bypass the restriction.
+    block-drop-items:
+      enabled: true
+      max-tier: 2          # Helper(1) + Mod(2) can't drop in creative
+    block-container-access:
+      enabled: true
+      max-tier: 1          # Only Helper(1) blocked
+    block-item-pickup:
+      enabled: true
+      max-tier: 2
+
+# ── Punishments ──────────────────────────────────────────────────────
+punishments:
+  enabled: true
+
+  # Appeal URL shown on ban/kick screens
+  appeal-url: 'https://discord.gg/your-server'
+
+  # Show staff name on punishment screens? (false = "Console")
+  show-staff-name: false
+
+  # Quick punishment presets — used with /punish <player> <type>
+  # Each type runs a list of commands. Placeholders: {player}, {staff}
+  presets:
+    spam:
+      display-name: '&eSpamming'
+      actions:
+        - 'tempmute {player} 10m Spamming in chat'
+    advertising:
+      display-name: '&6Advertising'
+      actions:
+        - 'tempmute {player} 1h Advertising'
+        - 'warn {player} Advertising — next offense is a ban'
+    hacking:
+      display-name: '&cHacking'
+      actions:
+        - 'tempban {player} 30d Hacking/Cheating'
+    toxicity:
+      display-name: '&dToxicity'
+      actions:
+        - 'tempmute {player} 30m Toxic behavior'
+        - 'warn {player} Toxic behavior'
+    grief:
+      display-name: '&4Griefing'
+      actions:
+        - 'tempban {player} 7d Griefing'
+
+# ── Staff List ───────────────────────────────────────────────────────
+staff-list:
+  enabled: true
+  show-offline: true
+  max-offline-shown: 10
