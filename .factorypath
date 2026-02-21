@@ -69,4 +69,5 @@
     <factorypathentry kind="VARJAR" id="M2_REPO/com/google/crypto/tink/tink/1.14.1/tink-1.14.1.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/com/google/protobuf/protobuf-java/3.25.3/protobuf-java-3.25.3.jar" enabled="true" runInBatchMode="false"/>
     <factorypathentry kind="VARJAR" id="M2_REPO/org/xerial/sqlite-jdbc/3.47.1.0/sqlite-jdbc-3.47.1.0.jar" enabled="true" runInBatchMode="false"/>
+    <factorypathentry kind="VARJAR" id="M2_REPO/net/luckperms/api/5.4/api-5.4.jar" enabled="true" runInBatchMode="false"/>
 </factorypath>

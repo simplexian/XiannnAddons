@@ -62,18 +62,17 @@ public class PunishmentSystem implements Listener {
 
     // ── Logic: Ban ───────────────────────────────────────────────────
 
-    private void handleBan(CommandSender sender, String[] args, boolean permanent) {
+    private void handleBan(CommandSender sender, String[] args, boolean perm) {
         if (args.length < 2) {
             sender.sendMessage(miniMessage.deserialize("<yellow>Usage: /ban <player> [time] <reason>"));
             return;
         }
 
-        String targetName = args[0];
+        final String targetName = args[0];
         long duration = 0;
-        String reason;
         int reasonIndex = 1;
 
-        // Parse duration if present (e.g. 1d, 30m) - only for tempban or if provided
+        // Parse duration if present (e.g. 1d, 30m)
         if (args.length > 2 && Character.isDigit(args[1].charAt(0))) {
             duration = TimeUtil.parseDuration(args[1]);
             reasonIndex = 2;
@@ -82,11 +81,13 @@ public class PunishmentSystem implements Listener {
         // Reconstruct reason
         StringBuilder sb = new StringBuilder();
         for (int i = reasonIndex; i < args.length; i++) sb.append(args[i]).append(" ");
-        reason = sb.toString().trim();
-        if (reason.isEmpty()) reason = "No reason provided";
+        final String reason = sb.toString().trim().isEmpty() ? "No reason provided" : sb.toString().trim();
+
+        // Capture variables for lambda
+        final long finalDuration = duration;
+        final String staffName = sender.getName();
 
         // Execute async
-        long finalDuration = duration;
         Bukkit.getScheduler().runTaskAsynchronously(module.getPlugin(), () -> {
             UUID targetUUID = resolveUUID(targetName);
             if (targetUUID == null) {
@@ -123,38 +124,41 @@ public class PunishmentSystem implements Listener {
             }
 
             // Kick if online (Sync)
+            final long finalExpires = expires;
+            final String finalAppealId = appealId;
+
             Bukkit.getScheduler().runTask(module.getPlugin(), () -> {
                 Player target = Bukkit.getPlayer(targetUUID);
                 if (target != null) {
-                    target.kick(formatBanScreen(reason, expires, appealId));
+                    target.kick(formatBanScreen(reason, finalExpires, finalAppealId));
                 }
-                broadcast("ban", targetName, sender.getName(), reason);
+                broadcast("ban", targetName, staffName, reason);
             });
 
-            // Log
-            logToDiscord("punishments", "ban", Map.of(
-                "{player}", targetName,
-                "{staff}", sender.getName(),
-                "{reason}", reason,
-                "{type}", type,
-                "{duration}", finalDuration > 0 ? TimeUtil.formatDuration(finalDuration) : "Permanent",
-                "{expires}", expires > 0 ? TimeUtil.formatDuration(expires - System.currentTimeMillis()) : "Never",
-                "{appeal_id}", appealId
-            ));
+            // Log to Discord
+            Map<String, String> logMap = new HashMap<>();
+            logMap.put("{player}", targetName);
+            logMap.put("{staff}", staffName);
+            logMap.put("{reason}", reason);
+            logMap.put("{type}", type);
+            logMap.put("{duration}", finalDuration > 0 ? TimeUtil.formatDuration(finalDuration) : "Permanent");
+            logMap.put("{expires}", finalExpires > 0 ? TimeUtil.formatDuration(finalExpires - System.currentTimeMillis()) : "Never");
+            logMap.put("{appeal_id}", finalAppealId);
+
+            logToDiscord("punishments", "ban", logMap);
         });
     }
 
     // ── Logic: Mute ──────────────────────────────────────────────────
 
-    private void handleMute(CommandSender sender, String[] args, boolean permanent) {
+    private void handleMute(CommandSender sender, String[] args, boolean perm) {
         if (args.length < 2) {
             sender.sendMessage(miniMessage.deserialize("<yellow>Usage: /mute <player> [time] <reason>"));
             return;
         }
 
-        String targetName = args[0];
+        final String targetName = args[0];
         long duration = 0;
-        String reason;
         int reasonIndex = 1;
 
         if (args.length > 2 && Character.isDigit(args[1].charAt(0))) {
@@ -164,10 +168,11 @@ public class PunishmentSystem implements Listener {
 
         StringBuilder sb = new StringBuilder();
         for (int i = reasonIndex; i < args.length; i++) sb.append(args[i]).append(" ");
-        reason = sb.toString().trim();
-        if (reason.isEmpty()) reason = "No reason provided";
+        final String reason = sb.toString().trim().isEmpty() ? "No reason provided" : sb.toString().trim();
 
-        long finalDuration = duration;
+        final long finalDuration = duration;
+        final String staffName = sender.getName();
+
         Bukkit.getScheduler().runTaskAsynchronously(module.getPlugin(), () -> {
             UUID targetUUID = resolveUUID(targetName);
             if (targetUUID == null) {
@@ -192,13 +197,14 @@ public class PunishmentSystem implements Listener {
                 module.getLog().error("Failed to mute " + targetName, e);
             }
 
+            final long finalExpires = expires;
             logToDiscord("punishments", "mute", Map.of(
                 "{player}", targetName,
-                "{staff}", sender.getName(),
+                "{staff}", staffName,
                 "{reason}", reason,
                 "{type}", type,
                 "{duration}", finalDuration > 0 ? TimeUtil.formatDuration(finalDuration) : "Permanent",
-                "{expires}", expires > 0 ? TimeUtil.formatDuration(expires - System.currentTimeMillis()) : "Never"
+                "{expires}", finalExpires > 0 ? TimeUtil.formatDuration(finalExpires - System.currentTimeMillis()) : "Never"
             ));
         });
     }
@@ -218,7 +224,8 @@ public class PunishmentSystem implements Listener {
 
         StringBuilder sb = new StringBuilder();
         for (int i = 1; i < args.length; i++) sb.append(args[i]).append(" ");
-        String reason = sb.toString().trim();
+        final String reason = sb.toString().trim();
+        final String staffName = sender.getName();
 
         // Rank Check
         if (sender instanceof Player p && !module.getConfigManager().canPunish(p, target)) {
@@ -226,16 +233,21 @@ public class PunishmentSystem implements Listener {
             return;
         }
 
+        final String targetName = target.getName();
+        final UUID targetUUID = target.getUniqueId();
+
         // DB Log
         Bukkit.getScheduler().runTaskAsynchronously(module.getPlugin(), () -> {
             try (Connection conn = module.getDatabase().getConnection();
                  PreparedStatement ps = conn.prepareStatement("INSERT INTO kicks (player_uuid, staff_uuid, reason, created) VALUES (?, ?, ?, ?)")) {
-                ps.setString(1, target.getUniqueId().toString());
+                ps.setString(1, targetUUID.toString());
                 ps.setString(2, sender instanceof Player p ? p.getUniqueId().toString() : "CONSOLE");
                 ps.setString(3, reason);
                 ps.setLong(4, System.currentTimeMillis());
                 ps.executeUpdate();
-            } catch (SQLException e) { module.getLog().error("Kick log failed", e); }
+            } catch (SQLException e) { 
+                module.getLog().error("Kick log failed", e); 
+            }
         });
 
         // Action
@@ -243,7 +255,7 @@ public class PunishmentSystem implements Listener {
             module.getConfigManager().getConfig().getString("messages.kick-screen", "<red>Kicked")
             .replace("{reason}", reason)
         ));
-        broadcast("kick", target.getName(), sender.getName(), reason);
+        broadcast("kick", targetName, staffName, reason);
     }
 
     // ── Listeners: Enforce Punishments ───────────────────────────────
@@ -318,7 +330,7 @@ public class PunishmentSystem implements Listener {
         return miniMessage.deserialize(raw
             .replace("{reason}", reason)
             .replace("{expires}", expireStr)
-            .replace("{appeal_id}", appealId)
+            .replace("{appeal_id}", appealId != null ? appealId : "Unknown")
             .replace("{appeal_url}", appealUrl));
     }
 
@@ -341,7 +353,7 @@ public class PunishmentSystem implements Listener {
         // Read config presets, execute commands as console/sender
     }
     
-    // Stub methods for other commands (simplified)
+    // Stub methods for other commands
     private void handleWarn(CommandSender s, String[] a) {}
     private void handleHistory(CommandSender s, String[] a) {}
     private void handleAlts(CommandSender s, String[] a) {}

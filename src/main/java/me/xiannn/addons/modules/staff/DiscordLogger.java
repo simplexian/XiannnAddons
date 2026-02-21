@@ -7,7 +7,6 @@ import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import org.bukkit.Bukkit;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -135,9 +134,19 @@ public class DiscordLogger {
         // Fields
         if (embedCfg.contains("fields")) {
             for (Map<?, ?> map : embedCfg.getMapList("fields")) {
-                String name = replace((String) map.get("name"), placeholders);
-                String value = replace((String) map.get("value"), placeholders);
-                boolean inline = (Boolean) map.getOrDefault("inline", false);
+                Object nameObj = map.get("name");
+                Object valObj = map.get("value");
+                Object inlineObj = map.get("inline");
+
+                String name = replace(nameObj != null ? nameObj.toString() : "", placeholders);
+                String value = replace(valObj != null ? valObj.toString() : "", placeholders);
+                
+                // FIX: Safe boolean casting
+                boolean inline = false;
+                if (inlineObj instanceof Boolean) {
+                    inline = (Boolean) inlineObj;
+                }
+
                 eb.addField(name, value, inline);
             }
         }

@@ -27,10 +27,6 @@
             <id>papermc</id>
             <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
-        <repository>
-            <id>jda</id>
-            <url>https://maven.dv8tion.net/releases</url>
-        </repository>
     </repositories>
 
     <!-- ── Dependencies ───────────────────────────────────────── -->
