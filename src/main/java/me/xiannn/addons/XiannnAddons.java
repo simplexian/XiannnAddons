@@ -2,6 +2,7 @@ package me.xiannn.addons;
 
 import me.xiannn.addons.modules.ChatReminderModule;
 import me.xiannn.addons.modules.ItemCleanupModule;
+import me.xiannn.addons.modules.staff.StaffModule;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.ClickEvent;
 import net.kyori.adventure.text.event.HoverEvent;
@@ -125,6 +126,7 @@ public final class XiannnAddons extends JavaPlugin
 
         addModule(new ChatReminderModule(this));
         addModule(new ItemCleanupModule(this));
+        addModule(new StaffModule(this));
         // Future:
         // addModule(new AutoPlantModule(this));
 
